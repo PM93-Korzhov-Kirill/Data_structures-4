@@ -26,6 +26,7 @@ void printTable(table_t table); //распечатывает таблицу в консоль
 void printField(field_t field); //распечатывает поле таблицы в консоль
 int getPosField(table_t table, string key); //выдаёт позицию поля в таблице по ключу. Выдаёт -1, если ничего не нашёл
 void deleteField(table_t &table, string key); //удаляет поле в таблице по ключу
+int isTableEmpty(table_t table);
 
 int main()
 {
@@ -39,11 +40,14 @@ int main()
       insertFieldAtTable(table, field);
 
    printTable(table); //показательно распечатаем таблицу
-   cout << "Какое поле по счёту сверху вы хотите удалить?" << endl;
+   cout << "Какое поле по счёту сверху вы хотите удалить? 0 - ничего не удалять" << endl;
    int field_num_for_delete = 0;
    cin >> field_num_for_delete;
-   cout << "Ваше поле имело ключ:" << table.fields[field_num_for_delete - 1].key << endl; //покажем, что мы удаляем по ключу
-   deleteField(table, table.fields[field_num_for_delete].key);
+   if (field_num_for_delete > 0)
+   {
+      cout << "Ваше поле имело ключ:" << table.fields[field_num_for_delete - 1].key << endl; //покажем, что мы удаляем по ключу
+      deleteField(table, table.fields[field_num_for_delete - 1].key);
+   }
    cout << "Новая таблица:" << endl;
    printTable(table); // распечатываем новую таблицу
 
@@ -121,4 +125,11 @@ void deleteField(table_t &table, string key)
          table.fields[i] = table.fields[i + 1];
       table.size--;
    }
+}
+
+int isTableEmpty(table_t table)
+{
+   if (table.size == 0)
+      return 1;
+   return 0;
 }
